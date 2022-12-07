@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import com.krishanshamod.simple_android_application_7.R
 import com.krishanshamod.simple_android_application_7.databinding.FragmentMainBinding
@@ -31,7 +32,16 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        // Listen the editText text changes and update the text in the viewModel
+        binding.editText.addTextChangedListener {
+            viewModel.updateText(it.toString())
+        }
+
+        // Observe the text LiveData
+        viewModel.text.observe(viewLifecycleOwner) {
+            binding.textView.text = it
+        }
     }
 
 }
